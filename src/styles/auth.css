@@ -1,3 +1,7 @@
+body{
+    background-color: #98c1d9 !important;
+}
+
 .auth-container{
     display: flex;
     flex-direction: column;
@@ -20,7 +24,7 @@
 .auth-header{
     font-size: 3rem;
     font-weight: 600;
-    color: #8785A2;
+    color: #293241;
     text-align: center;
     text-decoration: underline;
 }

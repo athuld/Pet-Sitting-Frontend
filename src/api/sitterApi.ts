@@ -25,7 +25,16 @@ export const loginUser = async (user: any) => {
 export const getUserDetails = async () => {
   try {
     const res = await sitterApi.get("/api/user/get_details");
-    return res;
+    return res.data;
+  } catch (err) {
+    return 400;
+  }
+};
+
+export const addUserDetails = async (userDetails: any) => {
+  try {
+    const res = await sitterApi.post("/api/user/add_details", userDetails);
+    return res.status;
   } catch (err) {
     return 400;
   }

@@ -1,0 +1,10 @@
+.add-ud-main{
+    height: 100vh;
+    max-width: 100vw;
+    display: grid;
+    place-items: center;
+}
+
+.add-ud-container{
+    min-width: 40vw;
+}
