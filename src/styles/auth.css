@@ -1,0 +1,26 @@
+.auth-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("../assets/login-bg.svg");
+    background-size:100% 100%;
+    -o-background-size: 100% 100%;
+    -webkit-background-size: 100% 100%;
+    background-size:cover;
+}
+
+.auth-main{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.auth-header{
+    font-size: 3rem;
+    font-weight: 600;
+    color: #8785A2;
+    text-align: center;
+    text-decoration: underline;
+}
