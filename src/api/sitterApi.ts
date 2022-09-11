@@ -15,7 +15,9 @@ export const registerUser = async (user: any) => {
 
 export const loginUser = async (user: any) => {
   try {
-    const res = await sitterApi.post("/api/user/login", user);
+    const res = await sitterApi.post("/api/user/login", user, {
+      withCredentials: true,
+    });
     return res.status;
   } catch (err) {
     return 400;
@@ -24,7 +26,9 @@ export const loginUser = async (user: any) => {
 
 export const getUserDetails = async () => {
   try {
-    const res = await sitterApi.get("/api/user/get_details");
+    const res = await sitterApi.get("/api/user/get_details", {
+      withCredentials: true,
+    });
     return res.data;
   } catch (err) {
     return 400;
@@ -33,7 +37,9 @@ export const getUserDetails = async () => {
 
 export const addUserDetails = async (userDetails: any) => {
   try {
-    const res = await sitterApi.post("/api/user/add_details", userDetails);
+    const res = await sitterApi.post("/api/user/add_details", userDetails, {
+      withCredentials: true,
+    });
     return res.status;
   } catch (err) {
     return 400;

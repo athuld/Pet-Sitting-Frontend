@@ -43,5 +43,5 @@ table {
 	border-spacing: 0;
 }
 body{
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', sans-serif !important;
 }

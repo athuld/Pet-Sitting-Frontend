@@ -10,23 +10,25 @@ import {
   Grid,
   Button,
   Avatar,
+  Title,
 } from "@mantine/core";
 import "../styles/user-details.css";
 import UploadImg from "../utils/UploadImg";
 import { addUserDetails } from "../api/sitterApi";
 import { showNotification } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons";
+import { useNavigate } from "react-router-dom";
 
 const AddUserDetails = () => {
   const [userDetails, setUserDetails] = useState({});
   const [url, setUrl] = useState(
     "http://res.cloudinary.com/athuld/image/upload/v1662833671/frozgkkmynpcxdxpasbi.jpg"
   );
-  const [image, setImage] = useState<File|null>();
+  const [image, setImage] = useState<File | null>();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<any>) => {
-    console.log(e)
     if (e.target.name === "is_petsitter" || e.target.name === "is_dogwalker") {
       setUserDetails((prev) => ({
         ...prev,
@@ -64,19 +66,24 @@ const AddUserDetails = () => {
         icon: <IconX />,
       });
     } else {
+      setLoading(false);
       showNotification({
         title: "Data Added",
         message: "Details had been updated",
         color: "green",
         icon: <IconCheck />,
       });
+      setTimeout(() => {
+        navigate("/user/dashboard");
+      }, 3000);
     }
   };
 
   return (
     <div className="add-ud-main">
       <div className="add-ud-container">
-        <Paper withBorder shadow="md" py={35} px={50} my={60}>
+        <Paper withBorder shadow="md" py={35} px={50}  my={60}>
+        <Title align="center" mb="lg" color="dark">Tell us about yourself</Title>
           <form action="" onChange={handleChange} onSubmit={handleSubmit}>
             <TextInput
               label="Full Name"
