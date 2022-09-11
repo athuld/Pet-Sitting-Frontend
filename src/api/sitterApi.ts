@@ -24,6 +24,17 @@ export const loginUser = async (user: any) => {
   }
 };
 
+export const logOut = async () => {
+  try {
+    const res = await sitterApi.post("/api/user/logout", {
+      withCredentials: true,
+    });
+    return res.status;
+  } catch (err) {
+    return 400;
+  }
+};
+
 export const getUserDetails = async () => {
   try {
     const res = await sitterApi.get("/api/user/get_details", {

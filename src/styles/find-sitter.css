@@ -1,0 +1,8 @@
+.find-sitter-container{
+    display: grid;
+    place-items: center;
+}
+.find-sitter-main{
+    width: 60vw;
+    height: 60vh;
+}

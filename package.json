@@ -11,6 +11,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@mantine/core": "^5.3.0",
+    "@mantine/dates": "^5.3.0",
     "@mantine/hooks": "^5.3.0",
     "@mantine/modals": "^5.3.0",
     "@mantine/notifications": "^5.3.0",
@@ -19,6 +20,7 @@
     "@tanstack/react-query-devtools": "^4.3.1",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^0.27.2",
+    "dayjs": "^1.11.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0"
