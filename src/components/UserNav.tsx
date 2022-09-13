@@ -13,6 +13,7 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { useNavigate } from "react-router-dom";
 import { logOut } from "../api/sitterApi";
+import {useQueryClient} from "@tanstack/react-query"
 
 const HEADER_HEIGHT = 60;
 
@@ -96,11 +97,15 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export function UserNav({ activeLink }: any) {
+
+const queryClient = useQueryClient()
+
   const navigate = useNavigate();
 
   const handleLogOut = async () => {
     const status = await logOut();
     status === 200 ? navigate("/") : null;
+    queryClient.clear()
   };
 
   const links = [
@@ -112,10 +117,10 @@ export function UserNav({ activeLink }: any) {
       link: "/user/find/sitter",
       label: "Find a sitter",
     },
-    {
-      link: "/user/find/walker",
-      label: "Find a walker",
-    },
+    // {
+    //   link: "/user/find/walker",
+    //   label: "Find a walker",
+    // },
   ];
   const [opened, { toggle, close }] = useDisclosure(false);
   const [active, setActive] = useState(links[activeLink].link);

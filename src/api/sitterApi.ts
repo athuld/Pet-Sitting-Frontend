@@ -26,7 +26,7 @@ export const loginUser = async (user: any) => {
 
 export const logOut = async () => {
   try {
-    const res = await sitterApi.post("/api/user/logout", {
+    const res = await sitterApi.get("/api/user/logout", {
       withCredentials: true,
     });
     return res.status;
@@ -55,6 +55,80 @@ export const addUserDetails = async (userDetails: any) => {
   } catch (err) {
     return 400;
   }
+};
+
+export const getPetDetails = async () => {
+  const res = await sitterApi.get("/api/user/pet/get_all", {
+    withCredentials: true,
+  });
+  return res.data;
+};
+
+export const addPetDetails = async (data: any) => {
+  return await sitterApi.post("/api/user/pet/add_pet", data, {
+    withCredentials: true,
+  });
+};
+
+export const deletePetDetails = async (id: any) => {
+  return await sitterApi.delete("/api/user/pet/delete_pet", {
+    params: { id: id },
+    withCredentials: true,
+  });
+};
+
+export const getActiveRequests = async () => {
+  return await sitterApi.get("/api/user/sitter_req/get_all/active", {
+    withCredentials: true,
+  });
+};
+
+export const getInActiveRequests = async () => {
+  return await sitterApi.get("/api/user/sitter_req/get_all/inactive", {
+    withCredentials: true,
+  });
+};
+
+export const deleteRequestById = async (req_id: any) => {
+  return await sitterApi.delete("/api/user/sitter_req/delete_request", {
+    withCredentials: true,
+    params: { req_id: req_id },
+  });
+};
+
+export const addSitterRequest = async (data: any) => {
+  return await sitterApi.post("/api/user/sitter_req/add_request", data, {
+    withCredentials: true,
+  });
+};
+
+export const getResponsesById = async (req_id: any) => {
+  const res = await sitterApi.get("/api/user/sitter/responses/by_id", {
+    withCredentials: true,
+    params: { req_id: req_id },
+  });
+  return res.data;
+};
+
+export const getActiveRequestsByPincode = async (pincode: any) => {
+  const res = await sitterApi.get("/api/user/sitter/get_all/by_pincode", {
+    withCredentials: true,
+    params: { pincode: pincode },
+  });
+  return res.data;
+};
+
+export const addResponseById = async ({ data, req_id }: any) => {
+  await sitterApi.post("/api/user/sitter/response", data, {
+    withCredentials: true,
+    params: { req_id: req_id },
+  });
+};
+
+export const acceptResponseById = async (data: any) => {
+  await sitterApi.patch("/api/user/sitter/response/accept", data, {
+    withCredentials: true,
+  });
 };
 
 export default sitterApi;

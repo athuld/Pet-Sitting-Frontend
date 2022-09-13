@@ -6,3 +6,8 @@
     width: 60vw;
     height: 60vh;
 }
+
+.responses-container{
+    min-height: 35rem;
+    min-width: 40rem;
+}

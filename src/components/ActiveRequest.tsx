@@ -1,28 +1,32 @@
-import { Paper, Image, Text, SimpleGrid, Grid, Chip, Button } from "@mantine/core";
+import { Paper, Image, Text, Grid, Chip, Button } from "@mantine/core";
+import { useState } from "react";
+import ViewSitterResponse from "./ViewSitterResponse";
 
-const ActiveRequest = () => {
+const ActiveRequest = ({request}:any) => {
+const [resViewOpen, setResViewOpen] = useState(false)
   return (
     <div>
-      <Paper withBorder shadow="md" px={30} py={10}>
+    <ViewSitterResponse resViewOpen={resViewOpen} setResViewOpen={setResViewOpen} data={request} />
+      <Paper withBorder mb="md" shadow="md" px={30} py={10}>
         <Grid>
           <Grid.Col span={2}>
             <Image
               height={75}
               width={75}
-              src="https://images.unsplash.com/photo-1511216335778-7cb8f49fa7a3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
+              src={request.pet_img}
               radius="md"
             />
           </Grid.Col>
           <Grid.Col span={4}>
             <div className="sitter-req-card-details">
               <Text size="md" color="dimmed" weight={500}>
-                Date: 09-12-2022
+                Date: {request.date}
               </Text>
               <Text size="md" color="dimmed" weight={500}>
-                Type: Dog
+                Time: {request.time}
               </Text>
               <Text size="md" color="dimmed" weight={500}>
-                Base Amount: Rs. 500
+                Base Amount: Rs. {request.base_prize}
               </Text>
             </div>
           </Grid.Col>
@@ -30,7 +34,7 @@ const ActiveRequest = () => {
             <Chip color="green" variant="filled" checked>Active</Chip>
           </Grid.Col>
           <Grid.Col style={{display:"grid",placeItems:"center"}} span={2}>
-            <Button>View</Button>
+            <Button onClick={()=>setResViewOpen(true)}>View</Button>
           </Grid.Col>
         </Grid>
       </Paper>

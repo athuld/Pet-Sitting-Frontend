@@ -31,8 +31,8 @@
 }
 
 .sitter-req-card{
+    margin-bottom: 1em;
     width: 40rem;
-    height: 7rem;
 }
 .sitter-req-card-details{
     display: flex;

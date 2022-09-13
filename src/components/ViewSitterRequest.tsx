@@ -1,6 +1,58 @@
-import { Modal, Paper, SimpleGrid, Image, Text, Title, TextInput, NumberInput, Textarea, Button } from "@mantine/core";
+import {
+  Modal,
+  Paper,
+  SimpleGrid,
+  Image,
+  Text,
+  Title,
+  NumberInput,
+  Textarea,
+  Button,
+} from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
+import { IconCheck } from "@tabler/icons";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { addResponseById } from "../api/sitterApi";
 
-const ViewSitterRequest = ({ reqViewOpen, setReqViewOpen }: any) => {
+const ViewSitterRequest = ({ reqViewOpen, setReqViewOpen, data }: any) => {
+  const queryClient = useQueryClient();
+  const [loading, setLoading] = useState(false);
+  const [resDetails, setResDetails] = useState<any>({});
+  const addResponse = useMutation(addResponseById, {
+    onSuccess: () => {
+      setLoading(false);
+      setReqViewOpen(false);
+      showNotification({
+        title: "Response recorded",
+        message: "Response has been recorded successfully",
+        color: "green",
+        icon: <IconCheck />,
+      });
+      queryClient.invalidateQueries(["active-by-pin"]);
+    },
+  });
+
+  const handleChange = (e: React.ChangeEvent<any>) => {
+    if (e.target.inputMode === "numeric") {
+      setResDetails((prev: any) => ({
+        ...prev,
+        [e.target.name]: parseInt(e.target.value),
+      }));
+    } else {
+      setResDetails((prev: any) => ({
+        ...prev,
+        [e.target.name]: e.target.value,
+      }));
+    }
+  };
+
+  const handleSubmit = (e: React.ChangeEvent<any>) => {
+    e.preventDefault();
+    setLoading(true);
+    addResponse.mutate({ data: resDetails, req_id: data.req_id });
+  };
+
   return (
     <>
       <Modal
@@ -16,25 +68,25 @@ const ViewSitterRequest = ({ reqViewOpen, setReqViewOpen }: any) => {
                   Request Details
                 </Title>
                 <Text mb="xs" color="dark" weight={600}>
-                  Date: 05-12-1998
+                  Date: {data.date}
                 </Text>
                 <Text mb="xs" color="dark" weight={600}>
-                  Time: 05:00 PM
+                  Time: {data.time}
                 </Text>
                 <Text mb="xs" color="dark" weight={600}>
-                  Base Prize: Rs.500
+                  Base Prize: Rs.{data.base_prize}
                 </Text>
                 <Text mb="xs" color="dark" weight={600}>
-                  Instructions: Please take care of dog
+                  Instructions: {data.instructions}
                 </Text>
                 <Text mb="xs" color="dark" weight={600}>
-                  Address: Maniyakuzhi
+                  Address: {data.address}
                 </Text>
                 <Text mb="xs" color="dark" weight={600}>
-                  Pincode: 682006
+                  Pincode: {data.pincode}
                 </Text>
                 <Text mb="xs" color="dark" weight={600}>
-                  Phone: 9995774987
+                  Phone: {data.phone}
                 </Text>
               </Paper>
             </div>
@@ -46,38 +98,47 @@ const ViewSitterRequest = ({ reqViewOpen, setReqViewOpen }: any) => {
                       Pet Details
                     </Title>
                     <Text mb="xs" color="dark" weight={600}>
-                      Name: Toby
+                      Name: {data.pet_name}
                     </Text>
                     <Text mb="xs" color="dark" weight={600}>
-                      Type: Dog
+                      Type: {data.pet_type}
                     </Text>
                     <Text mb="xs" color="dark" weight={600}>
-                      Gender: Male
+                      Gender: {data.pet_gender}
                     </Text>
                     <Text mb="xs" color="dark" weight={600}>
-                      Weight: 5kg
+                      Weight: {data.pet_weight}
                     </Text>
                   </div>
-                  <Image
-                    height={190}
-                    width={270}
-                    src="https://images.unsplash.com/photo-1579263477001-7a703f1974e6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80"
-                  />
+                  <Image height={190} width={270} src={data.pet_img} />
                 </SimpleGrid>
               </Paper>
             </div>
           </div>
           <div className="resp-form-container">
             <Paper p="xl">
-            <Title color="dark">Respond to the request</Title>
-                <form action="">
-                    <NumberInput label="Requote base prize" required mb="xl" placeholder="Enter your cost"/>
-                    <Textarea required mb={40} label="Enter your response to the request"/>
-                    <SimpleGrid cols={2}>
-                        <Button color="gray" onClick={()=>setReqViewOpen(false)}>Close</Button>
-                        <Button>Respond</Button>
-                    </SimpleGrid>
-                </form>
+              <Title color="dark">Respond to the request</Title>
+              <form action="" onChange={handleChange} onSubmit={handleSubmit}>
+                <NumberInput
+                  label="Requote base prize"
+                  required
+                  mb="xl"
+                  name="prize"
+                  placeholder="Enter your cost"
+                />
+                <Textarea
+                  required
+                  mb={40}
+                  name="response"
+                  label="Enter your response to the request"
+                />
+                <SimpleGrid cols={2}>
+                  <Button color="gray" onClick={() => setReqViewOpen(false)}>
+                    Close
+                  </Button>
+                  <Button type="submit" loading={loading}>Respond</Button>
+                </SimpleGrid>
+              </form>
             </Paper>
           </div>
         </div>

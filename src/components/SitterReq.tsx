@@ -1,46 +1,89 @@
-import { Paper, Text, Title, Image, SimpleGrid, Button } from "@mantine/core";
+import {
+  Paper,
+  Text,
+  Title,
+  Image,
+  SimpleGrid,
+  Button,
+  Loader,
+} from "@mantine/core";
 import { useState } from "react";
-import {useNavigate} from "react-router-dom"
 import ViewSitterRequest from "./ViewSitterRequest";
+import {  useQuery} from "@tanstack/react-query";
+import { getActiveRequestsByPincode } from "../api/sitterApi";
 
 
-function SitterReq() {
- const navigate = useNavigate()
- const [reqViewOpen, setReqViewOpen] = useState(false)
+function SitterReq({ userData }: any) {
+  const [reqViewOpen, setReqViewOpen] = useState(false);
+  const [reqData, setReqData] = useState({})
+
+  const { data, isLoading, isError } = useQuery(["active-by-pin"], () =>
+    getActiveRequestsByPincode(userData.pincode)
+  );
+
+  const handleViewOpen = (reqData:any)=>{
+        setReqData(reqData)
+        setReqViewOpen(true)
+    }
+
 
   return (
     <>
-    <ViewSitterRequest reqViewOpen={reqViewOpen} setReqViewOpen={setReqViewOpen}/>
+      <ViewSitterRequest
+        reqViewOpen={reqViewOpen}
+        setReqViewOpen={setReqViewOpen}
+        data={reqData}
+      />
       <Title mt="lg">Available sitter requests</Title>
-      <div className="sitter-req-card">
-        <Paper withBorder mt="md" shadow="md">
-          <SimpleGrid cols={3}>
-            <Image
-              height={150}
-              width={200}
-              src="https://images.unsplash.com/photo-1511216335778-7cb8f49fa7a3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
-              radius="md"
-            />
-            <div className="sitter-req-card-details">
-                <Text size="md" color="dimmed" weight={500}>
-                  Date: 09-12-2022
-                </Text>
-                <Text size="md" color="dimmed" weight={500}>
-                  Type: Dog
-                </Text>
-                <Text size="md" color="dimmed" weight={500}>
-                  Pinocode: 682006
-                </Text>
-              <Text size="md" color="dimmed" weight={500}>
-                Base Amount: Rs. 500
-              </Text>
+      {isLoading ? (
+        <div style={{ textAlign: "center" }}>
+          <Loader variant="bars" />
+        </div>
+      ) : isError ? (
+        <Text mt={50} size={20} align="center" weight={600} color="dimmed">
+          You don't have any active requests
+        </Text>
+      ) : (
+        data?.map((req: any) => {
+          return (
+            <div className="sitter-req-card">
+              <Paper withBorder mt="md" shadow="md">
+                <SimpleGrid cols={3}>
+                  <Image
+                    height={120}
+                    width={150}
+                    src={req.pet_img}
+                    radius="md"
+                  />
+                  <div className="sitter-req-card-details">
+                    <Text size="md" color="dimmed" weight={500}>
+                      Date: {req.date}
+                    </Text>
+                    <Text size="md" color="dimmed" weight={500}>
+                      Type: {req.pet_type}
+                    </Text>
+                    <Text size="md" color="dimmed" weight={500}>
+                      Pinocode: {req.pincode}
+                    </Text>
+                    <Text size="md" color="dimmed" weight={500}>
+                      Base Amount: Rs. {req.base_prize}
+                    </Text>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Button onClick={() => handleViewOpen(req)}>View</Button>
+                  </div>
+                </SimpleGrid>
+              </Paper>
             </div>
-            <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <Button onClick={()=>setReqViewOpen(true)}>View</Button>
-            </div>
-          </SimpleGrid>
-        </Paper>
-      </div>
+          );
+        })
+      )}
     </>
   );
 }

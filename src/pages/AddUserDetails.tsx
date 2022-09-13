@@ -26,6 +26,7 @@ const AddUserDetails = () => {
   );
   const [image, setImage] = useState<File | null>();
   const [loading, setLoading] = useState(false);
+  const [gender, setGender] = useState<string | null>(null)
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<any>) => {
@@ -47,16 +48,14 @@ const AddUserDetails = () => {
     }
   };
 
+
   const handleSubmit = async (e: React.ChangeEvent<any>) => {
     e.preventDefault();
     setLoading(true);
-    setUserDetails((prev) => ({
-      ...prev,
-      avatar_img: url,
-    }));
-    console.log(userDetails);
-    console.log(userDetails);
-    const status = await addUserDetails(userDetails);
+    const data:any = {...userDetails}
+    data["gender"] = gender
+    data["avatar_img"] = url
+    const status = await addUserDetails(data);
     if (status === 400) {
       setLoading(false);
       showNotification({
@@ -75,7 +74,7 @@ const AddUserDetails = () => {
       });
       setTimeout(() => {
         navigate("/user/dashboard");
-      }, 3000);
+      }, 1000);
     }
   };
 
@@ -97,6 +96,8 @@ const AddUserDetails = () => {
               placeholder="Select your gender"
               name="gender"
               required
+              value={gender}
+              onChange={setGender}
               mb="sm"
               data={[
                 { value: "male", label: "Male" },

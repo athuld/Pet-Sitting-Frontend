@@ -44,7 +44,7 @@ const Login = () => {
     if (status === 200) {
       const res = await getUserDetails();
       setLoading(false)
-      res === 400 ? navigate("/add_details") : navigate("/user_dashboard");
+      res === 400 ? navigate("/add_details") : navigate("/user/dashboard");
     }
   };
 
