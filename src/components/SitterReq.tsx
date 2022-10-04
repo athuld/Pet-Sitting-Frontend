@@ -18,7 +18,7 @@ function SitterReq({ userData }: any) {
   const [reqData, setReqData] = useState({})
 
   const { data, isLoading, isError } = useQuery(["active-by-pin"], () =>
-    getActiveRequestsByPincode(userData.pincode)
+    getActiveRequestsByPincode(userData.pincode),{ retry: false }
   );
 
   const handleViewOpen = (reqData:any)=>{
@@ -34,7 +34,6 @@ function SitterReq({ userData }: any) {
         setReqViewOpen={setReqViewOpen}
         data={reqData}
       />
-      <Title mt="lg">Available sitter requests</Title>
       {isLoading ? (
         <div style={{ textAlign: "center" }}>
           <Loader variant="bars" />

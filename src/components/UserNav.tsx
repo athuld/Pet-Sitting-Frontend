@@ -121,6 +121,10 @@ const queryClient = useQueryClient()
     //   link: "/user/find/walker",
     //   label: "Find a walker",
     // },
+    {
+      link: "/user/find/sitter/popular",
+      label: "Popular Sitters",
+    },
   ];
   const [opened, { toggle, close }] = useDisclosure(false);
   const [active, setActive] = useState(links[activeLink].link);
