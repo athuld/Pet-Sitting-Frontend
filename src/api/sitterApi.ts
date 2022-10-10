@@ -83,6 +83,12 @@ export const getActiveRequests = async () => {
   });
 };
 
+export const getAcceptedRequests = async () => {
+  return await sitterApi.get("/api/user/sitter_req/get_all/accepted", {
+    withCredentials: true,
+  });
+};
+
 export const getInActiveRequests = async () => {
   return await sitterApi.get("/api/user/sitter_req/get_all/inactive", {
     withCredentials: true,
@@ -130,5 +136,54 @@ export const acceptResponseById = async (data: any) => {
     withCredentials: true,
   });
 };
+export const addNewReview = async (data: any) => {
+  await sitterApi.post("/api/user/review/add_review", data, {
+    withCredentials: true,
+  });
+};
 
+export const getReviewForOwner = async (sitter_id: any) => {
+  const res = await sitterApi.get("/api/user/review/get_review/owner", {
+    params: { sitter_id: sitter_id },
+    withCredentials: true,
+  });
+  return res.data
+};
+
+export const getReviewsForSitter = async () => {
+  const res = await sitterApi.get("/api/user/review/get_review/sitter", {
+    withCredentials: true,
+  });
+  return res.data
+};
+
+export const getReviewsForSitterById = async (sitter_id:any) => {
+  const res = await sitterApi.get("/api/user/review/get_review/sitter", {
+    params: { sitter_id: sitter_id },
+    withCredentials: true,
+  });
+  return res.data
+};
+
+export const getAllReviews = async () => {
+  const res = await sitterApi.get("/api/user/review/get_review/all", {
+    withCredentials: true,
+  });
+  return res.data
+};
+
+export const getAllUsersForAdmin = async() =>{
+    const res = await sitterApi.get("/api/admin/get/all_users",{withCredentials:true})
+    return res.data
+}
+
+export const getAllRequestsForAdmin = async() =>{
+    const res = await sitterApi.get("/api/admin/get/all_requests",{withCredentials:true})
+    return res.data
+}
+
+export const getAllPetsForAdmin = async() =>{
+    const res = await sitterApi.get("/api/admin/get/all_pets",{withCredentials:true})
+    return res.data
+}
 export default sitterApi;

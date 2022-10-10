@@ -1,37 +1,37 @@
 import { Avatar, Text, Grid, Paper, Chip } from '@mantine/core'
 
-const SitterNotification = () => {
+const SitterNotification = ({request}:any) => {
     return (
     <div className="owner-noti-card">
-      <Paper p="md">
+      <Paper withBorder shadow="md" p="md" mb="md">
         <Grid>
           <Grid.Col span={2} style={{display:"grid",placeItems:"center"}}>
               <Avatar
                 radius={100}
                 size="xl"
-                src="http://res.cloudinary.com/athuld/image/upload/v1662994992/jrndcgqitgt5ye7ipnsz.jpg"
+                src={request.pet_img}
               />
           </Grid.Col>
           <Grid.Col span={3}>
             <Text color="dark">
-                Type: Cat
+                Date: {request.date}
             </Text>
             <Text color="dark">
-                Cost: Rs 500
+                Time: {request.time}
             </Text>
             <Text color="dark">
-                Date: 09-12-2022
+                Cost: {request.prize}
             </Text>
           </Grid.Col>
           <Grid.Col span={5}>
             <Text color="dark">
-                Owner: Athul
+                Owner: {request.name}
             </Text>
             <Text color="dark">
-                Phone: 9985574458
+                Phone: {request.phone}
             </Text>
             <Text color="dark">
-                Address: Kottayam Ernakulam
+                Address: {request.address},{request.pincode}
             </Text>
           </Grid.Col>
           <Grid.Col span={2} style={{display:"grid",placeItems:"center"}}>

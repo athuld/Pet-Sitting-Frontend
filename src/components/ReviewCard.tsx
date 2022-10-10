@@ -1,32 +1,40 @@
 import { Avatar, Grid, Paper, Stack } from "@mantine/core";
 import StarRatings from "react-star-ratings";
 
-const ReviewCard = () => {
+const ReviewCard = ({review}:any) => {
+  let color: string = "red";
+  const rating = review?.rating;
+  if (rating === 3) {
+    color = "orange";
+  } else {
+    color = "green";
+  }
+
   return (
   <div style={{width:"35vw"}}>
-    <Paper withBorder px="md" py="md" shadow="md">
+    <Paper withBorder mb="md" px="md" py="md" shadow="md">
       <Grid>
         <Grid.Col span={3}>
           <Avatar
-            src="http://res.cloudinary.com/athuld/image/upload/v1663013144/mnjzutozezlm6mntjztl.jpg"
+            src={review?.avatar_img}
             radius={100}
             size={80}
           />
         </Grid.Col>
         <Grid.Col span={9}>
             <Stack>
-                Abhishek Arun
+                {review?.name}
             </Stack>
             <Stack>
                 <StarRatings
                 starDimension="18px"
-                rating={4}
+                rating={review?.rating}
                 numberOfStars={5}
-                starRatedColor="blue"
+                starRatedColor={color}
                 />
             </Stack>
             <Stack>
-            This is a test rating to check the rating
+            {review?.review}
             </Stack>
         </Grid.Col>
       </Grid>

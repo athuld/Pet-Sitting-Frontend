@@ -6,19 +6,20 @@ import {
   Group,
   Button,
   Container,
+  Divider,
 } from "@mantine/core";
 
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import HomeImg from "../assets/home.png";
 import { registerUser } from "../api/sitterApi";
-import {showNotification} from "@mantine/notifications"
-import {IconX} from "@tabler/icons"
+import { showNotification } from "@mantine/notifications";
+import { IconX } from "@tabler/icons";
 
 const Register = () => {
   const [register, setRegister] = useState({});
-  const [loading,setLoading] = useState(false)
-  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<any>) => {
     setRegister((prev) => ({
@@ -29,21 +30,30 @@ const Register = () => {
 
   const handleSubmit = async (e: React.ChangeEvent<any>) => {
     e.preventDefault();
-    setLoading(true)
-    const status = await registerUser(register)
-    if (status===400){
-      setLoading(false)
-        showNotification({title:"User Already Exist",message:"This User already exist in the system",color:"red",icon:<IconX/>})
+    setLoading(true);
+    const status = await registerUser(register);
+    if (status === 400) {
+      setLoading(false);
+      showNotification({
+        title: "User Already Exist",
+        message: "This User already exist in the system",
+        color: "red",
+        icon: <IconX />,
+      });
     }
-    if (status===200) {
-      setLoading(false)
-        navigate("/")
+    if (status === 200) {
+      setLoading(false);
+      navigate("/");
     }
   };
 
   return (
     <div className="auth-container">
-      <h1 className="auth-header">Register Your Account</h1>
+      <div style={{ width: "40vw"}}>
+        <Paper ml="lg" p="md" radius={30} withBorder shadow="md">
+          <h1 className="auth-header">Register Your Account</h1>
+        </Paper>
+      </div>
       <div className="auth-main">
         <img src={HomeImg} alt="" />
         <Container size={450} my={45}>
@@ -77,8 +87,14 @@ const Register = () => {
                   Login
                 </Link>
               </Group>
-              <Button loading={loading} type="submit" color={"violet"} fullWidth mt="xl">
-                Sign in
+              <Button
+                loading={loading}
+                type="submit"
+                color="blue"
+                fullWidth
+                mt="xl"
+              >
+                Sign up
               </Button>
             </form>
           </Paper>

@@ -122,6 +122,7 @@ const ViewSitterResponse = ({ resViewOpen, setResViewOpen, data }: any) => {
                   return (
                     <ResponseUserCard
                       data={response}
+                      petData={data}
                       setOpen={setResViewOpen}
                     />
                   );

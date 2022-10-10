@@ -5,12 +5,12 @@ import {
   Textarea,
   Select,
   NumberInput,
-  Checkbox,
   FileInput,
   Grid,
   Button,
   Avatar,
   Title,
+  Switch,
 } from "@mantine/core";
 import "../styles/user-details.css";
 import UploadImg from "../utils/UploadImg";
@@ -26,11 +26,11 @@ const AddUserDetails = () => {
   );
   const [image, setImage] = useState<File | null>();
   const [loading, setLoading] = useState(false);
-  const [gender, setGender] = useState<string | null>(null)
+  const [gender, setGender] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<any>) => {
-    if (e.target.name === "is_petsitter" || e.target.name === "is_dogwalker") {
+    if (e.target.name === "is_petsitter") {
       setUserDetails((prev) => ({
         ...prev,
         [e.target.name]: e.target.checked,
@@ -52,9 +52,9 @@ const AddUserDetails = () => {
   const handleSubmit = async (e: React.ChangeEvent<any>) => {
     e.preventDefault();
     setLoading(true);
-    const data:any = {...userDetails}
-    data["gender"] = gender
-    data["avatar_img"] = url
+    const data: any = { ...userDetails };
+    data["gender"] = gender;
+    data["avatar_img"] = url;
     const status = await addUserDetails(data);
     if (status === 400) {
       setLoading(false);
@@ -81,8 +81,10 @@ const AddUserDetails = () => {
   return (
     <div className="add-ud-main">
       <div className="add-ud-container">
-        <Paper withBorder shadow="md" py={35} px={50}  my={60}>
-        <Title align="center" mb="lg" color="dark">Tell us about yourself</Title>
+        <Paper withBorder shadow="md" py={35} px={50} my={60}>
+          <Title align="center" mb="lg" color="dark">
+            Tell us about yourself
+          </Title>
           <form action="" onChange={handleChange} onSubmit={handleSubmit}>
             <TextInput
               label="Full Name"
@@ -131,16 +133,17 @@ const AddUserDetails = () => {
               required
               label="Pincode"
               placeholder="Enter your pincode"
-              mb="sm"
+              mb="md"
             />
-            <Checkbox.Group
-              mb="lg"
-              required
-              label="Would like to be one of the following?"
-            >
-              <Checkbox name="is_petsitter" value="sitter" label="Pet Sitter" />
-              <Checkbox name="is_dogwalker" value="walker" label="Dog Walker" />
-            </Checkbox.Group>
+            <Switch
+              onLabel="yes"
+              offLabel="no"
+              size="md"
+              name="is_petsitter"
+              color="green"
+              mb="md"
+              label="Do you want to be a pet sitter?"
+            />
             <Grid grow>
               <Grid.Col span={6}>
                 <FileInput

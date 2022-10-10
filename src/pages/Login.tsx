@@ -50,7 +50,11 @@ const Login = () => {
 
   return (
     <div className="auth-container">
-      <h1 className="auth-header">Login To Your Account</h1>
+      <div style={{ width: "40vw"}}>
+        <Paper ml="lg" p="md" radius={30} withBorder shadow="md">
+          <h1 className="auth-header">Login to your account</h1>
+        </Paper>
+      </div>
       <div className="auth-main">
         <img src={HomeImg} alt="" />
         <Container size={450} my={45}>
@@ -77,7 +81,7 @@ const Login = () => {
                   Register
                 </Link>
               </Group>
-              <Button loading={loading} type="submit" color={"violet"} fullWidth mt="xl">
+              <Button loading={loading} type="submit" color="blue" fullWidth mt="xl">
                 Sign in
               </Button>
             </form>

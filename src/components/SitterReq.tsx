@@ -6,26 +6,27 @@ import {
   SimpleGrid,
   Button,
   Loader,
+  Chip,
 } from "@mantine/core";
 import { useState } from "react";
 import ViewSitterRequest from "./ViewSitterRequest";
-import {  useQuery} from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getActiveRequestsByPincode } from "../api/sitterApi";
-
 
 function SitterReq({ userData }: any) {
   const [reqViewOpen, setReqViewOpen] = useState(false);
-  const [reqData, setReqData] = useState({})
+  const [reqData, setReqData] = useState({});
 
-  const { data, isLoading, isError } = useQuery(["active-by-pin"], () =>
-    getActiveRequestsByPincode(userData.pincode),{ retry: false }
+  const { data, isLoading, isError } = useQuery(
+    ["active-by-pin"],
+    () => getActiveRequestsByPincode(userData.pincode),
+    { retry: false }
   );
 
-  const handleViewOpen = (reqData:any)=>{
-        setReqData(reqData)
-        setReqViewOpen(true)
-    }
-
+  const handleViewOpen = (reqData: any) => {
+    setReqData(reqData);
+    setReqViewOpen(true);
+  };
 
   return (
     <>
@@ -55,12 +56,19 @@ function SitterReq({ userData }: any) {
                     radius="md"
                   />
                   <div className="sitter-req-card-details">
+                    {req.is_personal ? (
+                      <Chip checked color="grape">
+                        Personal
+                      </Chip>
+                    ) : (
+                      <Chip checked color="blue">
+                        General
+                      </Chip>
+                    )}
                     <Text size="md" color="dimmed" weight={500}>
                       Date: {req.date}
                     </Text>
-                    <Text size="md" color="dimmed" weight={500}>
-                      Type: {req.pet_type}
-                    </Text>
+                    <Text size="md" color="dimmed" weight={500}></Text>
                     <Text size="md" color="dimmed" weight={500}>
                       Pinocode: {req.pincode}
                     </Text>

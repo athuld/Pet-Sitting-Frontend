@@ -2,30 +2,17 @@ import { Avatar, Button, Grid, Paper, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import { acceptResponseById } from "../api/sitterApi";
 
-const ResponseUserCard = ({ data, setOpen }: any) => {
-  const queryClient = useQueryClient();
+const ResponseUserCard = ({ data, setOpen,petData }: any) => {
 
-  const acceptResponse = useMutation(acceptResponseById, {
-    onSuccess: () => {
-      setOpen(false);
-      showNotification({
-        title: "Response accepted",
-        message: "Response had been accepted successfully",
-        color: "green",
-        icon: <IconCheck />,
-      });
-      queryClient.invalidateQueries(["active_reqs"]);
-      queryClient.invalidateQueries(["inactive_reqs"]);
-    },
-  });
-
-  const updateData = {
-    prize: data.prize,
-    sitter_id: data.user_id,
-    sitter_req_id: data.sitter_req_id,
+  const handleCheckout = () => {
+    setOpen(false);
+    navigate("/user/request/checkout", { state: {data,petData} });
   };
+
+  const navigate = useNavigate();
 
   return (
     <Paper withBorder mb="md" mt="md" shadow="md" px={35} py={10}>
@@ -53,10 +40,7 @@ const ResponseUserCard = ({ data, setOpen }: any) => {
           </div>
         </Grid.Col>
         <Grid.Col style={{ display: "grid", placeItems: "center" }} span={2}>
-          <Button
-            onClick={() => acceptResponse.mutate(updateData)}
-            color="green"
-          >
+          <Button onClick={handleCheckout} color="green">
             Accept
           </Button>
         </Grid.Col>

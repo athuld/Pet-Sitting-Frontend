@@ -45,3 +45,7 @@ table {
 body{
     font-family: 'Poppins', sans-serif !important;
 }
+.ag-row .ag-cell {
+  display: flex;
+  align-items: center;
+}

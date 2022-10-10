@@ -1,72 +1,58 @@
-import {
-  Avatar,
-  Divider,
-  Grid,
-  Modal,
-  Paper,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import StarRatings from "react-star-ratings";
+import { Button,Text, Divider, Loader, Modal, Title } from "@mantine/core";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { getReviewsForSitterById } from "../api/sitterApi";
+import AddSitterRequest from "./AddSitterRequest";
+import PopularSitterProfile from "./PopularSitterProfile";
+import ReviewCard from "./ReviewCard";
 
-const ViewPopularSitter = ({ openView, setOpenView }: any) => {
+const ViewPopularSitter = ({ openView, setOpenView,data }: any) => {
+
+  const {
+    data:reviewData,
+    isLoading:reviewLoading,
+    isError:reviewError,
+  } = useQuery(["reviewData",data.sitter_id],()=>getReviewsForSitterById(data.sitter_id), { retry: false });
+
+  const [opened, setOpened] = useState(false);
   return (
     <Modal fullScreen opened={openView} onClose={() => setOpenView(false)}>
+      <AddSitterRequest opened={opened} setOpened={setOpened} />
       <div
         style={{
-          width: "100vw",
+          width: "95vw",
           display: "grid",
           placeItems: "center",
         }}
       >
         <div style={{ width: "60rem" }}>
-          <Paper withBorder px={30} py={20} shadow="lg">
-            <Stack>
-              <Title color="dimmed">Sitter Details</Title>
-              <Divider mb="lg" />
-            </Stack>
-            <Stack>
-              <Grid>
-                <Grid.Col
-                  style={{ display: "grid", placeItems: "center" }}
-                  span={3}
-                >
-                  <Avatar
-                    radius={100}
-                    size={130}
-                    src="http://res.cloudinary.com/athuld/image/upload/v1663013144/mnjzutozezlm6mntjztl.jpg"
-                  />
-                </Grid.Col>
-                <Grid.Col span={5}>
-                  <Text size={30} color="dark">
-                    Abhishek Arun
+          <PopularSitterProfile data={data} />
+          <Button my="lg" onClick={() => setOpened(true)}>
+            Make a request
+          </Button>
+          <Title color="dimmed">Recent Reviews</Title>
+          <Divider mb="lg" />
+                {reviewLoading ? (
+                  <div style={{ textAlign: "center" }}>
+                    <Loader variant="bars" />
+                  </div>
+                ) : reviewError ? (
+                  <Text
+                    mt={50}
+                    size={20}
+                    align="center"
+                    weight={600}
+                    color="dimmed"
+                  >
+                    You don't have any reviews
                   </Text>
-                  <Text color="dimmed">Address: Duke Villa</Text>
-                  <Text color="dimmed">Pincode: 682006</Text>
-                  <Text color="dimmed">Phone: 998877854</Text>
-                  <Text color="dimmed">Email: duke@gmail.com</Text>
-                </Grid.Col>
-
-                <Grid.Col
-                  style={{ display: "grid", placeItems: "center" }}
-                  span={3}
-                >
-                  <Stack>
-                    <Text size={40}>4.5</Text>
-                  </Stack>
-                  <Stack>
-                    <StarRatings
-                      numberOfStars={5}
-                      starDimension="20px"
-                      starRatedColor="green"
-                      rating={4.5}
-                    />
-                  </Stack>
-                </Grid.Col>
-              </Grid>
-            </Stack>
-          </Paper>
+                ) : (
+                  <>
+                    {reviewData?.map((review: any) => {
+                      return <ReviewCard review={review} />;
+                    })}
+                  </>
+                )}
         </div>
       </div>
     </Modal>
