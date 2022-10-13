@@ -117,10 +117,6 @@ const queryClient = useQueryClient()
       link: "/user/find/sitter",
       label: "Find a sitter",
     },
-    // {
-    //   link: "/user/find/walker",
-    //   label: "Find a walker",
-    // },
     {
       link: "/user/find/sitter/popular",
       label: "Popular Sitters",
