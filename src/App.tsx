@@ -3,7 +3,9 @@ import AddUserDetails from "./pages/AddUserDetails";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminPetDetails from "./pages/AdminPetDetails";
 import AdminRequestDetails from "./pages/AdminRequestDetails";
+import AdminRevenueDetails from "./pages/AdminRevenueDetails";
 import AdminSitterDetails from "./pages/AdminSitterDetails";
+import AdminTransactionDetails from "./pages/AdminTransactionDetails";
 import AdminUserDetails from "./pages/AdminUserDetails";
 import Checkout from "./pages/Checkout";
 import FindSitter from "./pages/FindSitter";
@@ -30,6 +32,8 @@ function App() {
         <Route path="/admin/sitters" element={<AdminSitterDetails/>}/>
         <Route path="/admin/requests" element={<AdminRequestDetails/>}/>
         <Route path="/admin/pets" element={<AdminPetDetails/>}/>
+        <Route path="/admin/transactions" element={<AdminTransactionDetails/>}/>
+        <Route path="/admin/revenue" element={<AdminRevenueDetails/>}/>
       </Routes>
     </Router>
   );

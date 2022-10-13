@@ -13,14 +13,15 @@ import {
 import { showNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { format } from "date-fns";
 import { useLocation, useNavigate } from "react-router-dom";
-import { acceptResponseById } from "../api/sitterApi";
+import { acceptResponseById, addTransaction } from "../api/sitterApi";
 import { UserNav } from "../components/UserNav";
 
 const Checkout = () => {
   const { state } = useLocation();
   const { data, petData } = state;
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const queryClient = useQueryClient();
 
@@ -34,14 +35,28 @@ const Checkout = () => {
       });
       queryClient.invalidateQueries(["active_reqs"]);
       queryClient.invalidateQueries(["inactive_reqs"]);
-      navigate("/user/find/sitter")
+      navigate("/user/find/sitter");
     },
   });
 
-  const updateData = {
+  const addNewTransaction = useMutation(addTransaction, {
+    onSuccess: () => {
+      acceptResponse.mutate(updateData);
+    },
+  });
+
+  const updateData: any = {
     prize: data.prize,
     sitter_id: data.user_id,
     sitter_req_id: data.sitter_req_id,
+  };
+
+  const handlCheckout = () => {
+    updateData["transaction_date"] = format(new Date(), "yyyy-MM-dd");
+    updateData["amount"] = data.prize;
+    updateData["charges"] = (data.prize / 100) * 18;
+    updateData["pet_name"] = petData.pet_name;
+    addNewTransaction.mutate(updateData);
   };
 
   return (
@@ -136,18 +151,26 @@ const Checkout = () => {
             </SimpleGrid>
             <SimpleGrid cols={2} mb="sm">
               <Text>Charges</Text>
-              <Text align="right" color="dimmed">+ 18%</Text>
+              <Text align="right" color="dimmed">
+                + 18%
+              </Text>
             </SimpleGrid>
             <SimpleGrid cols={2} mb="md">
               <Text>Charges Amount</Text>
-              <Text align="right" color="dimmed">+ ₹ {(data.prize/100)*18}</Text>
+              <Text align="right" color="dimmed">
+                + ₹ {(data.prize / 100) * 18}
+              </Text>
             </SimpleGrid>
-            <Divider mb="sm"/>
+            <Divider mb="sm" />
             <SimpleGrid cols={2} mb="lg">
               <Text size="lg">Total Amount</Text>
-              <Text size="lg" align="right" color="dark">₹ {((data.prize/100)*18)+data.prize}</Text>
+              <Text size="lg" align="right" color="dark">
+                ₹ {(data.prize / 100) * 18 + data.prize}
+              </Text>
             </SimpleGrid>
-            <Button fullWidth onClick={()=>acceptResponse.mutate(updateData)} color="dark">Checkout</Button>
+            <Button fullWidth onClick={() => handlCheckout()} color="dark">
+              Checkout
+            </Button>
           </Paper>
         </div>
       </div>

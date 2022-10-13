@@ -1,7 +1,6 @@
 import {
   Paper,
   Text,
-  Title,
   Image,
   SimpleGrid,
   Button,

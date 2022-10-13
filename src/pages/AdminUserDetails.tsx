@@ -37,7 +37,7 @@ const AdminUserDetails = () => {
     gridRef.current.api.sizeColumnsToFit();
   }, []);
   const onBtExport = useCallback(() => {
-    gridRef.current.api.exportDataAsExcel();
+    gridRef.current.api.exportDataAsCsv();
   }, []);
 
   return (

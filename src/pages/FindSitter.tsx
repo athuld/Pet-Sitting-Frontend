@@ -26,7 +26,7 @@ const FindSitter = () => {
 
   return (
     <>
-      <AddSitterRequest opened={opened} setOpened={setOpened} />
+      <AddSitterRequest opened={opened} setOpened={setOpened} is_personal={false} />
       <UserNav activeLink={1} />
       <div className="find-sitter-container">
         <div className="find-sitter-main">

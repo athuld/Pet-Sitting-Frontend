@@ -14,12 +14,13 @@ import { format } from "date-fns";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { showNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
+import dayjs from "dayjs";
 
-const AddSitterRequest = ({ opened, setOpened }: any) => {
+const AddSitterRequest = ({ opened, setOpened,is_personal }: any) => {
   const queryClient = useQueryClient();
 
   const [loading, setLoading] = useState(false);
-  const [reqDetails, setReqDetails] = useState({});
+  const [reqDetails, setReqDetails] = useState({is_personal:is_personal});
   const [time, setTime] = useState<any>(format(new Date(), "hh:mm aaaa"));
   const [date, setDate] = useState<any>(format(new Date(), "dd-MM-yyyy"));
   const [petId, setPetId] = useState<any>();
@@ -105,11 +106,12 @@ const AddSitterRequest = ({ opened, setOpened }: any) => {
           />
           <DatePicker
             mb="sm"
-            onChange={(e: any) => setDate(format(e, "dd-MM-yyyy"))}
+            onChange={(e: any) => setDate(format(e, "yyyy-MM-dd"))}
             placeholder="Select your date"
             label="Date of sitting"
             name="date"
             required
+            minDate={new Date()}
           />
           <TimeInput
             label="Pick time"

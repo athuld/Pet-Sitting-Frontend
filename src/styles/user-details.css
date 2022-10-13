@@ -8,3 +8,19 @@
 .add-ud-container{
     min-width: 40vw;
 }
+
+.dash-card{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    cursor: pointer;
+    background-color: white;
+    border-radius: 1em;
+    padding: 3em;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+}
+
+.dash-card:hover{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+}

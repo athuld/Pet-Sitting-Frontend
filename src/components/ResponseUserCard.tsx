@@ -1,9 +1,5 @@
 import { Avatar, Button, Grid, Paper, Text } from "@mantine/core";
-import { showNotification } from "@mantine/notifications";
-import { IconCheck } from "@tabler/icons";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { acceptResponseById } from "../api/sitterApi";
 
 const ResponseUserCard = ({ data, setOpen,petData }: any) => {
 

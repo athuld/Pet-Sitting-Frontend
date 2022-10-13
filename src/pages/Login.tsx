@@ -18,7 +18,7 @@ import { IconX } from "@tabler/icons";
 
 const Login = () => {
   const [login, setLogin] = useState({});
-  const [loading,setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<any>) => {
@@ -30,10 +30,10 @@ const Login = () => {
 
   const handleSubmit = async (e: React.ChangeEvent<any>) => {
     e.preventDefault();
-    setLoading(true)
-    const status = await loginUser(login);
-    if (status === 400) {
-      setLoading(false)
+    setLoading(true);
+    const res: any = await loginUser(login);
+    if (res.status === 400) {
+      setLoading(false);
       showNotification({
         title: "Invalid Credentials",
         message: "The provided credentials are incorrect",
@@ -41,16 +41,21 @@ const Login = () => {
         icon: <IconX />,
       });
     }
-    if (status === 200) {
-      const res = await getUserDetails();
-      setLoading(false)
-      res === 400 ? navigate("/add_details") : navigate("/user/dashboard");
+    if (res.status === 200) {
+      console.log(res);
+      if (res.data.email === "admin@sitter.com") {
+        navigate("/admin/dashboard");
+      } else {
+        const resp = await getUserDetails();
+        setLoading(false);
+        resp === 400 ? navigate("/add_details") : navigate("/user/dashboard");
+      }
     }
   };
 
   return (
     <div className="auth-container">
-      <div style={{ width: "40vw"}}>
+      <div style={{ width: "40vw" }}>
         <Paper ml="lg" p="md" radius={30} withBorder shadow="md">
           <h1 className="auth-header">Login to your account</h1>
         </Paper>
@@ -81,7 +86,13 @@ const Login = () => {
                   Register
                 </Link>
               </Group>
-              <Button loading={loading} type="submit" color="blue" fullWidth mt="xl">
+              <Button
+                loading={loading}
+                type="submit"
+                color="blue"
+                fullWidth
+                mt="xl"
+              >
                 Sign in
               </Button>
             </form>

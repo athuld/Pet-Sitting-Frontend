@@ -1,3 +1,4 @@
+
 import { AdminNav } from "../components/AdminNav";
 import { useRef, useState, useCallback } from "react";
 import { AgGridReact } from "ag-grid-react";
@@ -7,13 +8,13 @@ import "ag-grid-community/dist/styles/ag-theme-material.min.css";
 import { Button, Divider, Text, Loader, Title } from "@mantine/core";
 import { IconDownload } from "@tabler/icons";
 import { useQuery } from "@tanstack/react-query";
-import { getAllPetsForAdmin } from "../api/sitterApi";
+import { getAllTransactionsForAdmin } from "../api/sitterApi";
 
-const AdminPetDetails = () => {
+const AdminTransactionDetails = () => {
   const gridRef = useRef();
   const { data, isLoading, isError } = useQuery(
-    ["pets"],
-    getAllPetsForAdmin,
+    ["transactions"],
+    getAllTransactionsForAdmin,
     { retry: false }
   );
 
@@ -22,13 +23,14 @@ const AdminPetDetails = () => {
       filter: true,
   };
   const [columnDefs] = useState([
-    { field: "id" },
-    { field: "owner_id" },
+    { field: "transaction_id" },
+    { field: "user_id" },
     { field: "pet_name" },
-    { field: "pet_type" },
-    { field: "pet_gender" },
-    { field: "pet_weight" },
-    { field: "pet_desc" },
+    { field: "sitter_id" },
+    { field: "amount" },
+    { field: "charges" },
+    { field: "transaction_date",filter:"agDateColumnFilter" },
+    { field: "sitter_req_id" },
   ]);
   const onFirstDataRendered = useCallback((params) => {
     gridRef.current.api.sizeColumnsToFit();
@@ -39,13 +41,13 @@ const AdminPetDetails = () => {
 
   return (
     <div style={{ display: "flex", gap: "2rem" }}>
-      <AdminNav activeLabel="Pets" />
+      <AdminNav activeLabel="Transactions" />
         <div
             className="ag-theme-material"
             style={{ minWidth: 1100, maxHeight: "83vh" }}
           >
             <Title mt="md" color="dimmed">
-              Pets
+              Transactions
             </Title>
             <Divider mb="md" />
       {isLoading ? (
@@ -76,6 +78,7 @@ const AdminPetDetails = () => {
               paginationAutoPageSize={true}
               defaultColDef={defaultColDef}
               columnDefs={columnDefs}
+              // onFirstDataRendered={onFirstDataRendered}
             ></AgGridReact>
         </>
       )}
@@ -84,4 +87,4 @@ const AdminPetDetails = () => {
   );
 };
 
-export default AdminPetDetails;
+export default AdminTransactionDetails

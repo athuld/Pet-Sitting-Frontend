@@ -1,10 +1,15 @@
 import { Paper, Title, Text, Divider, Loader } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import { getAllReviews } from "../api/sitterApi";
+import { getAllReviews, getUserDetails } from "../api/sitterApi";
 import PopularSitterCard from "../components/PopularSitterCard";
 import { UserNav } from "../components/UserNav";
 
 const PopularSitters = () => {
+  const { data: userData, isLoading: userLoading } = useQuery(
+    ["userData"],
+    getUserDetails
+  );
+
   const { data, isLoading, isError } = useQuery(
     ["popular_sitters"],
     getAllReviews,
@@ -21,7 +26,7 @@ const PopularSitters = () => {
               Popular Sitters Near You
             </Title>
             <Divider mb={50} mt="sm" />
-            {isLoading ? (
+            {isLoading && userLoading ? (
               <div style={{ textAlign: "center" }}>
                 <Loader variant="bars" />
               </div>
@@ -40,7 +45,10 @@ const PopularSitters = () => {
                 {data?.map((review: any, key: any) => {
                   return (
                     <div key={key}>
-                      <PopularSitterCard data={review} />
+                      <PopularSitterCard
+                        userId={userData?.user_id}
+                        data={review}
+                      />
                     </div>
                   );
                 })}

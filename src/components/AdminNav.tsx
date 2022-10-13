@@ -11,6 +11,8 @@ import {
   IconFriends,
 } from "@tabler/icons";
 import { useNavigate } from "react-router-dom";
+import { logOut } from "../api/sitterApi";
+import { useQueryClient } from "@tanstack/react-query";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -96,15 +98,27 @@ const data = [
   { link: "/admin/sitters", label: "Sitters", icon: IconFriends },
   { link: "/admin/pets", label: "Pets", icon: IconPaw },
   { link: "/admin/requests", label: "Requests", icon: IconId },
-  { link: "", label: "Transactions", icon: IconArrowsExchange2 },
-  { link: "", label: "Revenue", icon: IconCurrencyRupee },
+  {
+    link: "/admin/transactions",
+    label: "Transactions",
+    icon: IconArrowsExchange2,
+  },
+  { link: "/admin/revenue", label: "Revenue", icon: IconCurrencyRupee },
 ];
 
-export function AdminNav({activeLabel}:any) {
+export function AdminNav({ activeLabel }: any) {
   const { classes, cx } = useStyles();
   const [active, setActive] = useState(activeLabel);
 
+  const queryClient = useQueryClient();
+
   const navigate = useNavigate();
+
+  const handleLogOut = async () => {
+    const status = await logOut();
+    status === 200 ? navigate("/") : null;
+    queryClient.clear();
+  };
 
   const links = data.map((item) => (
     <a
@@ -128,7 +142,9 @@ export function AdminNav({activeLabel}:any) {
     <Navbar height={700} width={{ sm: 300 }} p="md">
       <Navbar.Section grow>
         <Group className={classes.header} position="center">
-          <Text sx={{ fontWeight: 700 }} align="center">Admin Panel</Text>
+          <Text sx={{ fontWeight: 700 }} align="center">
+            Admin Panel
+          </Text>
         </Group>
         {links}
       </Navbar.Section>
@@ -137,7 +153,7 @@ export function AdminNav({activeLabel}:any) {
         <a
           href="#"
           className={classes.link}
-          onClick={(event) => event.preventDefault()}
+          onClick={handleLogOut}
         >
           <IconLogout className={classes.linkIcon} stroke={1.5} />
           <span>Logout</span>

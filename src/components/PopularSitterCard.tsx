@@ -3,12 +3,12 @@ import { useState } from "react";
 import StarRatings from "react-star-ratings";
 import ViewPopularSitter from "./ViewPopularSitter";
 
-const PopularSitterCard = ({data}:any) => {
+const PopularSitterCard = ({data,userId}:any) => {
     const [openView, setOpenView] = useState(false)
 
   return (
   <>
-  <ViewPopularSitter openView={openView} setOpenView={setOpenView} data={data} />
+  <ViewPopularSitter openView={openView} userId={userId} setOpenView={setOpenView} data={data} />
     <Paper withBorder mb="md" shadow="md" px={30} py={10}>
       <Grid>
         <Grid.Col span={2}>
